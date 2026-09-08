@@ -13,7 +13,7 @@
     --serif:"Source Serif 4", Georgia, "Times New Roman", serif;
     --display:"Oswald", "Arial Narrow", sans-serif;
     --mono:"JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
-    --trophy-mask:url("../assets/images/trophy.png");
+    --trophy-mask:url("trophy.png");
     color-scheme: dark;
   }
   :root[data-theme="light"]{
