@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Orejona</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+<link rel="manifest" href="favicon/site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div id="clock"><div class="bar" id="clockbar"></div><span class="crest">⚽ UCL</span><span class="label" id="minute">Kick-off</span></div>
+
+<section id="hero">
+  <div class="wrap">
+    <div class="eyebrow">UEFA Champions League · desde 1955</div>
+    <h1>La Orejona</h1>
+    <p class="sub">«Coupe des Clubs Champions Européens» — el trofeo que graba en plata cada leyenda del futbol europeo.</p>
+    <div class="trophy-stage">
+      <div class="trophy-tilt" id="trophyTilt">
+        <img id="trophyImg" src="assets/images/trophy.png" alt="Trofeo de la UEFA Champions League" draggable="false">
+        <div class="trophy-shine" id="trophyShine"></div>
+      </div>
+      <div class="trophy-plinth"></div>
+    </div>
+    <p class="trophy-hint">Muévela, arrástrala o inclina el teléfono</p>
+    <p class="scrollcue">Comienza el partido ↓</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap prose">
+    <div class="eyebrow">Saque inicial · 1955</div>
+    <h2 class="title">Una idea nacida en una redacción de París</h2>
+    <p>En la primavera de 1955, el diario deportivo francés <em>L'Équipe</em> discutía un problema que le parecía urgente: nadie sabía, con certeza, cuál era el mejor club de Europa. Su director, <strong>Gabriel Hanot</strong>, y el periodista <strong>Jacques Ferran</strong> propusieron una copa continental inspirada en el Campeonato Sudamericano de Campeones, que ya enfrentaba a los mejores equipos de otro continente.</p>
+    <p>La idea encontró aliados poderosos: el presidente del Real Madrid, <strong>Santiago Bernabéu</strong>, y el dirigente húngaro <strong>Gusztáv Sebes</strong> respaldaron el proyecto ante la UEFA. Dieciséis clubes fueron invitados a la primera edición, bautizada <em>Coupe des Clubs Champions Européens</em> — la Copa de Clubes Campeones Europeos.</p>
+    <p>El 13 de junio de 1956, en el Parque de los Príncipes de París, el <strong>Real Madrid venció 4–3 al Stade de Reims</strong> y levantó el primer título. Fue apenas el comienzo: los blancos ganarían las cinco primeras ediciones, una racha que todavía nadie ha igualado.</p>
+    <p>Treinta y siete años después, en la temporada <strong>1992-93</strong>, el torneo cambió de piel: se introdujo una fase de grupos previa a los cruces de eliminación directa y la competición pasó a llamarse <strong>Liga de Campeones de la UEFA</strong>, el nombre que conserva hoy.</p>
+    <div class="anthem">
+      <p style="margin-bottom:14px; color:var(--ink-muted); font-size:14.5px;">Ese mismo cambio trajo un himno propio: compuesto en 1992 por <strong>Tony Britten</strong> sobre la base del <em>Zadok the Priest</em> de Händel, y cantado en los tres idiomas oficiales de la UEFA.</p>
+      <div class="anthem-player">
+        <button class="anthem-play" id="anthemPlay" type="button" aria-label="Reproducir el himno">
+          <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+        </button>
+        <div class="anthem-info">
+          <span class="anthem-label">Escucha el himno</span>
+          <div class="anthem-bar" id="anthemBar"><div class="anthem-bar-fill" id="anthemBarFill"></div></div>
+        </div>
+        <span class="anthem-time" id="anthemTime">0:00</span>
+      </div>
+      <audio id="anthemAudio" preload="none" src="assets/audio/anthem.mp3"></audio>
+      <div class="row"><span class="lang">Inglés</span><span>The Champions</span></div>
+      <div class="row"><span class="lang">Alemán</span><span>Die Meister, die Besten</span></div>
+      <div class="row"><span class="lang">Francés</span><span>Ce sont les meilleures équipes</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap prose">
+    <div class="eyebrow">El trofeo</div>
+    <h2 class="title">Anatomía de la Orejona</h2>
+
+    <div class="trophy3d-wrap">
+      <div class="trophy3d-canvas-box" id="trophy3dBox">
+        <canvas id="trophy3dCanvas"></canvas>
+      </div>
+      <p class="trophy3d-caption">Arrastra para girar · toca los puntos para ver detalles</p>
+      <div class="trophy3d-actions"><button class="trophy3d-reset" id="trophy3dReset" type="button">Restablecer vista</button></div>
+      <div class="trophy3d-detail" id="trophy3dDetail"><b id="trophy3dDetailTitle"></b><p id="trophy3dDetailText"></p></div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat"><b class="tnum">73.5<span style="font-size:14px;">cm</span></b><span>Altura</span></div>
+      <div class="stat"><b class="tnum">7.5<span style="font-size:14px;">kg</span></b><span>Peso</span></div>
+      <div class="stat"><b>Plata</b><span>de ley, sin oro</span></div>
+      <div class="stat"><b class="tnum">340</b><span>Horas de trabajo</span></div>
+    </div>
+    <p>Solo cinco clubes llegaron a quedarse el trofeo original para siempre, bajo la vieja regla de las cinco ediciones o tres seguidas: <strong>Real Madrid (1966)</strong>, <strong>Ajax (1973)</strong>, <strong>Bayern de Múnich (1976)</strong>, <strong>Milan (1994)</strong> y <strong>Liverpool (2005)</strong>. Desde 2008-09 la UEFA lo conserva de forma permanente, y el resto del reparto es igual de preciso: 50 medallas de oro para el campeón, 50 de plata para el finalista.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap prose">
+    <div class="eyebrow">El balón oficial</div>
+    <h2 class="title">Un balón bautizado con el nombre de cada final</h2>
+    <p class="lede">Desde el cambio de milenio, adidas viste la final con un balón distinto cada año — y cada uno lleva grabada la ciudad que lo vio rodar.</p>
+  </div>
+  <div class="wide">
+    <div class="ball-scroll" role="list">
+      <div class="ball-card" role="listitem"><div class="ball-photo"><img src="assets/images/balls/ball-2000-01.jpg" alt="Balón Adidas Finale, Milán 2000-01" loading="lazy"></div><div class="ball-body"><span class="yr">2000–01</span><h3>Adidas Finale, Milán</h3><p>Adidas se convierte en proveedor oficial del balón de la final, sucediendo a Nike.</p></div></div>
+      <div class="ball-card" role="listitem"><div class="ball-photo"><img src="assets/images/balls/ball-2009-10.jpg" alt="Balón Adidas Finale Madrid, debut del Starball 2009-10" loading="lazy"></div><div class="ball-body"><span class="yr">2009–10</span><h3>Nace el Starball, Madrid</h3><p>Los paneles empiezan a dibujar la estrella de cinco puntas del propio logo del torneo.</p></div></div>
+      <div class="ball-card" role="listitem"><div class="ball-photo"><img src="assets/images/balls/ball-2019-20.jpg" alt="Balón oficial UEFA Champions League 2019-20" loading="lazy"></div><div class="ball-body"><span class="yr">2019–20</span><h3>Paneles rediseñados</h3><p>De bordes cosidos a paneles superpuestos, para mayor durabilidad y un vuelo más consistente.</p></div></div>
+      <div class="ball-card" role="listitem"><div class="ball-photo"><img src="assets/images/balls/ball-2024-25.jpg" alt="Balón Adidas Finale Múnich 25, final 2024-25" loading="lazy"></div><div class="ball-body"><span class="yr">2024–25</span><h3>Finale Múnich 25</h3><p>La tradición sigue intacta: un balón nuevo, un nombre nuevo, una final nueva — como un pasaporte para el propio balón.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap">
+    <div class="eyebrow">Los goleadores</div>
+    <h2 class="title">Quién ha llenado más redes en Europa</h2>
+    <div class="chart" id="chart"></div>
+    <div class="record-grid">
+      <div class="record"><b>17 goles en una temporada</b><span>Cristiano Ronaldo, 2013-14 — el máximo en una sola edición.</span></div>
+      <div class="record"><b>25 asistencias</b><span>Thomas Müller, el mayor asistente de la historia del torneo.</span></div>
+      <div class="record"><b>49 partidos para 50 goles</b><span>Erling Haaland llegó más rápido que nadie a esa cifra.</span></div>
+      <div class="record"><b>41 rivales distintos</b><span>Robert Lewandowski, el goleador más «universal» del torneo.</span></div>
+      <div class="record"><b>8 hat-tricks</b><span>Ronaldo y Messi empatan el récord de tripletes.</span></div>
+      <div class="record"><b>5 goles en un partido</b><span>Messi, ante el Bayer Leverkusen en 2012 — algo que Ronaldo nunca logró.</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Leyendas del torneo</div>
+    <h2 class="title">Los nombres que escribieron su propia leyenda</h2>
+    <div class="legend-grid" id="legends"></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap" style="max-width:900px;">
+    <div class="eyebrow">Los probables campeones · 2026-27</div>
+    <h2 class="title">¿A quién le dan las cuentas esta temporada?</h2>
+    <p class="lede">El supercomputador de Opta simula miles de veces el resto del torneo para estimar, ronda a ronda, quién tiene más chances de terminar levantando la copa en la final.</p>
+    <div class="probables-scroll">
+      <table class="probables">
+        <thead><tr><th>#</th><th>Club</th><th>Octavos</th><th>Cuartos</th><th>Semis</th><th>Final</th><th>Campeón</th></tr></thead>
+        <tbody id="probables"></tbody>
+      </table>
+    </div>
+    <p class="source-note">Fuente: <a href="https://theanalyst.com/articles/champions-league-predictions-2026-27-opta-supercomputer" target="_blank" rel="noopener">Opta Analyst</a>, proyecciones del 4 de septiembre de 2026 — se irán moviendo partido a partido.</p>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap prose" style="max-width:900px;">
+    <div class="eyebrow">El palmarés completo</div>
+    <h2 class="title">71 finales, una sola copa</h2>
+    <p class="lede">Desde el 4–3 de París en 1956 hasta la última tanda de penaltis. Busca un club o un año.</p>
+    <div class="club-chips" id="chips"></div>
+    <div class="club-detail" id="clubDetail" hidden>
+      <button class="club-detail-back" id="clubDetailBack" type="button">← Volver a los clubes</button>
+      <div class="club-detail-head" id="clubDetailHead"></div>
+      <div class="club-detail-list" id="clubDetailList"></div>
+    </div>
+    <div class="search-row">
+      <input id="search" type="text" placeholder="Buscar por club o año…" aria-label="Buscar campeón por club o año">
+      <span id="count" class="tnum"></span>
+    </div>
+    <div class="finals-scroll" id="winners" role="list"></div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap prose">
+    <div class="eyebrow">Ponte a prueba</div>
+    <h2 class="title">¿Cuánto sabes de la Champions?</h2>
+    <p class="lede">Seis preguntas rápidas sobre todo lo que acabas de leer — sin buscar en Google.</p>
+    <div class="quiz-card">
+      <div class="quiz-progress"><span id="quizProgressFill"></span></div>
+      <div class="quiz-step" id="quizStep">1 / 6</div>
+      <h3 class="quiz-question" id="quizQuestion"></h3>
+      <div class="quiz-options" id="quizOptions"></div>
+      <p class="quiz-feedback" id="quizFeedback"></p>
+    </div>
+    <div class="quiz-result" id="quizResult" hidden>
+      <h3 id="quizScoreTitle"></h3>
+      <p id="quizScoreText"></p>
+      <button id="quizRetry" type="button">Volver a intentar</button>
+    </div>
+  </div>
+</section>
+
+<section id="final">
+  <div class="wrap">
+    <div class="eyebrow">Pitido final</div>
+    <h2 class="title">¿Quién levantará la copa la próxima vez?</h2>
+    <p class="lede">El PSG defiende dos títulos seguidos. La Orejona, sin embargo, nunca ha repetido el mismo verso dos veces.</p>
+    <button id="spin" type="button">Girar el destino</button>
+    <div class="reel" id="reel" aria-live="polite">— · —</div>
+    <p class="fate-phrase" id="phrase"></p>
+  </div>
+</section>
+
+<footer>
+  Hecho para los que todavía se ponen de pie cuando suena el himno. · Datos históricos, cierre de temporada 2025-26.
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.149.0/three.min.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>
