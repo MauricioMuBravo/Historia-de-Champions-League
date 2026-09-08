@@ -1,4 +1,4 @@
-  :root{
+:root{
     --bg:#0a1220;
     --surface:#121b2e;
     --surface-2:#182339;
@@ -392,9 +392,16 @@
 
   @media (max-width:640px){
     .stat-row{ grid-template-columns:repeat(2,1fr); }
-    .chart .bar-row{ grid-template-columns:118px 1fr 40px; }
+    .chart .bar-row{
+      grid-template-columns:1fr auto;
+      grid-template-areas:"name name" "bar val";
+      row-gap:6px; padding:10px 0;
+    }
+    .chart .name{ grid-area:name; justify-content:flex-start; gap:8px; font-size:13.5px; }
+    .chart .name-text{ overflow:visible; text-overflow:clip; white-space:normal; }
+    .chart .track{ grid-area:bar; }
+    .chart .val{ grid-area:val; }
     .chart .avatar{ width:24px; height:24px; }
-    .chart .name{ gap:6px; font-size:12.5px; }
     .chart .avatar.placeholder{ font-size:9px; }
   }
   @media (prefers-reduced-motion: reduce){
