@@ -3,7 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>La Orejona</title>
+<title>La Orejona · Historia de la Champions League</title>
+<meta name="description" content="La historia de la UEFA Champions League: el trofeo en 3D, las 71 finales, los máximos goleadores, las leyendas y un quiz para ponerte a prueba.">
+<meta name="theme-color" content="#0a1220">
+<meta property="og:type" content="website">
+<meta property="og:title" content="La Orejona · Historia de la Champions League">
+<meta property="og:description" content="El trofeo en 3D, las 71 finales, los goleadores y un quiz. ¿Cuánto sabes de la Champions?">
+<meta property="og:image" content="trophy.png">
+<meta property="og:locale" content="es_MX">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -109,9 +117,10 @@
     <div class="eyebrow">Los goleadores</div>
     <h2 class="title">Quién ha llenado más redes en Europa</h2>
     <div class="chart" id="chart"></div>
+    <p class="source-note">Goles en la Champions League, sin contar la fase previa. Mbappé (73) y Haaland (62) actualizados en noviembre de 2026; el resto, al cierre de la temporada 2025-26.</p>
     <div class="record-grid">
       <div class="record"><b>17 goles en una temporada</b><span>Cristiano Ronaldo, 2013-14 — el máximo en una sola edición.</span></div>
-      <div class="record"><b>25 asistencias</b><span>Thomas Müller, el mayor asistente de la historia del torneo.</span></div>
+      <div class="record"><b>42 asistencias</b><span>Cristiano Ronaldo, también el máximo asistente de la historia del torneo.</span></div>
       <div class="record"><b>49 partidos para 50 goles</b><span>Erling Haaland llegó más rápido que nadie a esa cifra.</span></div>
       <div class="record"><b>41 rivales distintos</b><span>Robert Lewandowski, el goleador más «universal» del torneo.</span></div>
       <div class="record"><b>8 hat-tricks</b><span>Ronaldo y Messi empatan el récord de tripletes.</span></div>
@@ -132,14 +141,14 @@
   <div class="wrap" style="max-width:900px;">
     <div class="eyebrow">Los probables campeones · 2026-27</div>
     <h2 class="title">¿A quién le dan las cuentas esta temporada?</h2>
-    <p class="lede">El supercomputador de Opta simula miles de veces el resto del torneo para estimar, ronda a ronda, quién tiene más chances de terminar levantando la copa en la final.</p>
+    <p class="lede">El supercomputador de Opta simula 10,000 veces el resto del torneo para estimar quién tiene más chances de terminar levantando la copa en la final.</p>
     <div class="probables-scroll">
-      <table class="probables">
-        <thead><tr><th>#</th><th>Club</th><th>Octavos</th><th>Cuartos</th><th>Semis</th><th>Final</th><th>Campeón</th></tr></thead>
+      <table class="probables probables-titulo">
+        <thead><tr><th>#</th><th>Club</th><th>Campeón</th></tr></thead>
         <tbody id="probables"></tbody>
       </table>
     </div>
-    <p class="source-note">Fuente: <a href="https://theanalyst.com/articles/champions-league-predictions-2026-27-opta-supercomputer" target="_blank" rel="noopener">Opta Analyst</a>, proyecciones del 4 de septiembre de 2026 — se irán moviendo partido a partido.</p>
+    <p class="source-note">Fuente: <a href="https://theanalyst.com/articles/champions-league-predictions-2026-27-opta-supercomputer" target="_blank" rel="noopener">Opta Analyst</a>, proyección <span id="probablesFecha"></span>. Se mueve partido a partido.</p>
   </div>
 </section>
 
@@ -186,7 +195,7 @@
   <div class="wrap">
     <div class="eyebrow">Pitido final</div>
     <h2 class="title">¿Quién levantará la copa la próxima vez?</h2>
-    <p class="lede">El PSG defiende dos títulos seguidos. La Orejona, sin embargo, nunca ha repetido el mismo verso dos veces.</p>
+    <p class="lede">El PSG va por su tercera Orejona seguida, algo que solo han logrado el Real Madrid, el Ajax y el Bayern de Múnich.</p>
     <button id="spin" type="button">Girar el destino</button>
     <div class="reel" id="reel" aria-live="polite">— · —</div>
     <p class="fate-phrase" id="phrase"></p>
