@@ -234,6 +234,9 @@
   table.probables tbody td:first-child{ text-align:left; color:var(--ink-muted); font-family:var(--mono); font-size:12px; width:24px; }
   table.probables tbody td:nth-child(2){ text-align:left; font-weight:600; }
   table.probables tbody tr:hover{ background:var(--accent-soft); }
+  table.probables.probables-titulo{ min-width:0; }
+  table.probables.probables-titulo thead th:last-child{ text-align:right; padding-right:16px; }
+  table.probables.probables-titulo .winner-cell{ width:55%; text-align:right; padding-right:16px; }
   .club-cell{ display:flex; align-items:center; gap:10px; }
   .club-crest{ width:24px; height:24px; object-fit:contain; flex:none; display:block; }
   .winner-cell{ position:relative; }
