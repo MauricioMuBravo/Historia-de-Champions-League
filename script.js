@@ -51,17 +51,27 @@
   tilt.addEventListener('pointerdown', dragStart);
   tilt.addEventListener('pointermove', dragMove);
   window.addEventListener('pointerup', dragEnd);
-  tilt.addEventListener('touchstart', dragStart, {passive:true});
-  tilt.addEventListener('touchmove', dragMove, {passive:true});
-  window.addEventListener('touchend', dragEnd);
+  window.addEventListener('pointercancel', dragEnd);
   tilt.addEventListener('dblclick', function(){ targetY = 8; targetX = 6; });
 
+  function onOrientation(e){
+    if(dragging || e.gamma===null) return;
+    targetY = Math.max(-35, Math.min(35, e.gamma));
+    targetX = Math.max(-20, Math.min(20, (e.beta||40)-40));
+  }
   if(window.DeviceOrientationEvent){
-    window.addEventListener('deviceorientation', function(e){
-      if(dragging || e.gamma===null) return;
-      targetY = Math.max(-35, Math.min(35, e.gamma));
-      targetX = Math.max(-20, Math.min(20, (e.beta||40)-40));
-    });
+    if(typeof DeviceOrientationEvent.requestPermission === 'function'){
+      /* iPhone/iPad: el sensor necesita permiso y solo se puede pedir tras un toque del usuario */
+      var askMotion = function(){
+        document.removeEventListener('click', askMotion);
+        DeviceOrientationEvent.requestPermission().then(function(state){
+          if(state === 'granted') window.addEventListener('deviceorientation', onOrientation);
+        }).catch(function(){});
+      };
+      document.addEventListener('click', askMotion);
+    } else {
+      window.addEventListener('deviceorientation', onOrientation);
+    }
   }
 
   function loop(t){
@@ -265,9 +275,7 @@
       canvas.addEventListener('pointerdown', dragStart);
       window.addEventListener('pointermove', dragMove);
       window.addEventListener('pointerup', dragEnd);
-      canvas.addEventListener('touchstart', dragStart, {passive:true});
-      canvas.addEventListener('touchmove', dragMove, {passive:true});
-      window.addEventListener('touchend', dragEnd);
+      window.addEventListener('pointercancel', dragEnd);
 
       resetBtn.addEventListener('click', function(){
         targetY = 0.45; targetX = 0.08;
@@ -278,7 +286,17 @@
       window.addEventListener('resize', resize);
       resize();
 
+      /* solo anima mientras el visor está en pantalla, para no gastar batería */
+      var visible = true, running = false;
+      if('IntersectionObserver' in window){
+        new IntersectionObserver(function(entries){
+          visible = entries[0].isIntersecting;
+          if(visible && !running){ running = true; requestAnimationFrame(animate); }
+        }, { rootMargin:'100px' }).observe(box);
+      }
+
       function animate(t){
+        if(!visible){ running = false; return; }
         if(!dragging && !reduced){ targetY += Math.sin(t*0.0003)*0.0012; }
         rotY += (targetY-rotY)*0.09;
         rotX += (targetX-rotX)*0.09;
@@ -289,6 +307,7 @@
         renderer.render(scene, camera);
         requestAnimationFrame(animate);
       }
+      running = true;
       requestAnimationFrame(animate);
     } catch(err){
       showFallback();
@@ -324,8 +343,8 @@ var SCORER_PHOTOS = {
     /* ---------------- scorers chart ---------------- */
   var scorers = [
     ["Cristiano Ronaldo",140,"ronaldo"],["Lionel Messi",129,"messi"],["Robert Lewandowski",109,"lewandowski"],
-    ["Karim Benzema",90,"benzema"],["Raúl",71,"raul"],["Kylian Mbappé",70,"mbappe"],
-    ["Thomas Müller",57,"muller"],["Erling Haaland",57,"haaland"],["Ruud van Nistelrooy",56,"vannistelrooy"],
+    ["Karim Benzema",90,"benzema"],["Kylian Mbappé",73,"mbappe"],["Raúl",71,"raul"],
+    ["Erling Haaland",62,"haaland"],["Thomas Müller",57,"muller"],["Ruud van Nistelrooy",56,"vannistelrooy"],
     ["Harry Kane",54,"kane"],["Thierry Henry",50,"henry"],["Mohamed Salah",50,"salah"]
   ];
   var chartEl = document.getElementById('chart');
@@ -409,26 +428,25 @@ var CREST_PHOTOS = {
   };
 
     /* ---------------- probables (Opta) ---------------- */
+  /* Probabilidad de ganar el título según el supercomputador de Opta.
+     Actualiza la lista y PROBABLES_FECHA después de cada jornada. */
+  var PROBABLES_FECHA = "tras la jornada 4 de la fase liga (5 de noviembre de 2026)";
   var probables = [
-    ["Arsenal",93.1,70.6,50.6,34.7,21.2,"arsenal"],
-    ["Bayern de Múnich",93.5,70.9,50.7,34.0,19.9,"bayern"],
-    ["Manchester City",86.3,58.9,37.7,22.4,12.0,"man_city"],
-    ["Paris Saint-Germain",79.6,49.8,29.1,15.6,7.7,"psg"],
-    ["Barcelona",79.7,49.4,28.2,14.4,7.0,"barcelona"],
-    ["Real Madrid",77.4,44.5,22.5,10.4,5.1,"real_madrid"],
-    ["Liverpool",77.2,44.4,23.2,11.2,5.1,"liverpool"],
-    ["Manchester United",68.2,37.4,19.1,8.8,3.7,"man_utd"],
-    ["Inter de Milán",72.5,39.1,19.3,8.3,3.4,"inter"],
-    ["Aston Villa",58.6,28.6,12.3,4.9,2.0,"aston_villa"]
+    ["Arsenal",22.56,"arsenal"],
+    ["Bayern de Múnich",17.74,"bayern"],
+    ["Paris Saint-Germain",12.09,"psg"],
+    ["Manchester City",10.49,"man_city"]
   ];
+  var maxProb = Math.max.apply(null, probables.map(function(p){ return p[1]; }));
   document.getElementById('probables').innerHTML = probables.map(function(p,i){
-    var crestHtml = (p[6] && CREST_PHOTOS[p[6]])
-      ? '<img class="club-crest" src="'+CREST_PHOTOS[p[6]]+'" alt="">'
+    var crestHtml = (p[2] && CREST_PHOTOS[p[2]])
+      ? '<img class="club-crest" src="'+CREST_PHOTOS[p[2]]+'" alt="">'
       : '';
-    return '<tr><td>'+(i+1)+'</td><td><span class="club-cell">'+crestHtml+'<span>'+p[0]+'</span></span></td><td>'+p[1].toFixed(1)+'%</td><td>'+p[2].toFixed(1)+'%</td>'+
-      '<td>'+p[3].toFixed(1)+'%</td><td>'+p[4].toFixed(1)+'%</td>'+
-      '<td class="winner-cell"><span class="wbar"><i style="width:'+((p[5]/22)*100).toFixed(1)+'%"></i></span><span>'+p[5].toFixed(1)+'%</span></td></tr>';
+    return '<tr><td>'+(i+1)+'</td><td><span class="club-cell">'+crestHtml+'<span>'+p[0]+'</span></span></td>'+
+      '<td class="winner-cell"><span class="wbar"><i style="width:'+((p[1]/maxProb)*100).toFixed(1)+'%"></i></span><span>'+p[1].toFixed(1)+'%</span></td></tr>';
   }).join('');
+  var probFechaEl = document.getElementById('probablesFecha');
+  if(probFechaEl) probFechaEl.textContent = PROBABLES_FECHA;
 
   /* ---------------- winners table ---------------- */
   var winners = [
